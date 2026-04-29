@@ -1,6 +1,7 @@
 import random
 import streamlit as st
 from logic_utils import get_range_for_difficulty, parse_guess, check_guess, update_score
+from ai_advisor import get_ai_suggestion
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -41,6 +42,9 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "ai_suggestion" not in st.session_state:
+    st.session_state.ai_suggestion = None
+
 st.subheader("Make a guess")
 
 st.info(
@@ -52,19 +56,22 @@ raw_guess = st.text_input(
     key=f"guess_input_{difficulty}"
 )
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     submit = st.button("Submit Guess 🚀")
 with col2:
     new_game = st.button("New Game 🔁")
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
+with col4:
+    ask_ai = st.button("Ask AI 🤖")
 #fix: game not correcting reset issue, state and history have to reset to play/empty afte win
 if new_game:
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
     st.session_state.status = "playing"
     st.session_state.history = []
+    st.session_state.ai_suggestion = None
     st.success("New game started.")
     st.rerun()
 
@@ -81,14 +88,15 @@ if submit:
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
-        st.session_state.history.append(raw_guess)
+        st.session_state.history.append({"guess": raw_guess, "outcome": "Invalid"})
         st.error(err)
     else:
-        st.session_state.history.append(guess_int)
+        st.session_state.ai_suggestion = None  # clear stale suggestion
 
         secret = st.session_state.secret
 
         outcome, message = check_guess(guess_int, secret)
+        st.session_state.history.append({"guess": guess_int, "outcome": outcome})
 
         if show_hint:
             st.warning(message)
@@ -119,6 +127,32 @@ if submit:
 st.info(
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
+
+# AI Advisor
+if ask_ai and st.session_state.status == "playing":
+    valid_history = [
+        h for h in st.session_state.history
+        if isinstance(h, dict) and h["outcome"] in ("Too High", "Too Low")
+    ]
+    with st.spinner("AI advisor thinking..."):
+        st.session_state.ai_suggestion = get_ai_suggestion(
+            low=low,
+            high=high,
+            history=valid_history,
+            attempts_left=attempt_limit - st.session_state.attempts,
+        )
+
+if st.session_state.ai_suggestion:
+    s = st.session_state.ai_suggestion
+    with st.expander("🤖 AI Advisor", expanded=True):
+        if "error" in s:
+            st.error(f"AI Advisor error: {s['error']}")
+        else:
+            st.metric("Suggested next guess", s["suggested_guess"])
+            st.write(f"**Why:** {s['explanation']}")
+            with st.expander("Agent reasoning steps"):
+                st.write(f"**Narrowed range:** {s['lower_bound']} – {s['upper_bound']}")
+                st.write(f"**Analysis:** {s['reasoning']}")
 
 with st.expander("Developer Debug Info"):
     st.write("Secret:", st.session_state.secret)

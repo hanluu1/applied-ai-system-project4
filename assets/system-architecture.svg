@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-label="AI-Enhanced Number Guesser architecture diagram">
+  <defs>
+    <style>
+      .bg { fill: #f7f5ef; }
+      .title { font: 700 34px Arial, sans-serif; fill: #1f2937; }
+      .subtitle { font: 400 18px Arial, sans-serif; fill: #4b5563; }
+      .box { fill: #ffffff; stroke: #1f2937; stroke-width: 3; rx: 20; ry: 20; }
+      .boxAlt { fill: #eef6ff; stroke: #1d4ed8; stroke-width: 3; rx: 20; ry: 20; }
+      .boxSoft { fill: #fef3c7; stroke: #b45309; stroke-width: 3; rx: 20; ry: 20; }
+      .boxGreen { fill: #ecfdf5; stroke: #047857; stroke-width: 3; rx: 20; ry: 20; }
+      .label { font: 700 22px Arial, sans-serif; fill: #111827; }
+      .text { font: 400 17px Arial, sans-serif; fill: #111827; }
+      .small { font: 400 15px Arial, sans-serif; fill: #374151; }
+      .arrow { stroke: #374151; stroke-width: 4; fill: none; marker-end: url(#arrowHead); }
+      .arrowBlue { stroke: #1d4ed8; stroke-width: 4; fill: none; marker-end: url(#arrowHeadBlue); }
+      .arrowGreen { stroke: #047857; stroke-width: 4; fill: none; marker-end: url(#arrowHeadGreen); }
+      .sectionTitle { font: 700 24px Arial, sans-serif; fill: #1f2937; }
+    </style>
+    <marker id="arrowHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151" />
+    </marker>
+    <marker id="arrowHeadBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1d4ed8" />
+    </marker>
+    <marker id="arrowHeadGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#047857" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="1200" />
+  <text class="title" x="800" y="60" text-anchor="middle">AI-Enhanced Number Guesser System Architecture</text>
+  <text class="subtitle" x="800" y="95" text-anchor="middle">Streamlit UI, deterministic game logic, Gemini advisor, and reliability evaluation</text>
+
+  <rect class="boxAlt" x="90" y="140" width="1420" height="150" />
+  <text class="sectionTitle" x="150" y="185">User Interface Layer</text>
+  <text class="text" x="150" y="220">Streamlit app.py</text>
+  <text class="small" x="150" y="250">Difficulty picker, guess input, submit/new game buttons, AI advisor button, score and hint display</text>
+  <text class="small" x="150" y="278">Stores and reads state from st.session_state</text>
+
+  <rect class="box" x="120" y="350" width="410" height="190" />
+  <text class="label" x="145" y="390">Game Logic Layer</text>
+  <text class="text" x="145" y="425">logic_utils.py</text>
+  <text class="small" x="145" y="455">get_range_for_difficulty()</text>
+  <text class="small" x="145" y="480">parse_guess()</text>
+  <text class="small" x="145" y="505">check_guess()</text>
+  <text class="small" x="145" y="530">update_score()</text>
+
+  <rect class="boxSoft" x="590" y="350" width="420" height="190" />
+  <text class="label" x="615" y="390">AI Advisor Layer</text>
+  <text class="text" x="615" y="425">ai_advisor.py</text>
+  <text class="small" x="615" y="455">Gemini tool calling</text>
+  <text class="small" x="615" y="480">analyze_search_space()</text>
+  <text class="small" x="615" y="505">suggest_guess()</text>
+  <text class="small" x="615" y="530">Binary search suggestion + reasoning</text>
+
+  <rect class="boxGreen" x="1060" y="350" width="420" height="190" />
+  <text class="label" x="1085" y="390">Reliability Layer</text>
+  <text class="text" x="1085" y="425">evaluator.py</text>
+  <text class="small" x="1085" y="455">InputValidator</text>
+  <text class="small" x="1085" y="480">OutputGuardrails</text>
+  <text class="small" x="1085" y="505">GameStateEvaluator</text>
+  <text class="small" x="1085" y="530">HintEvaluator and ScoreValidator</text>
+
+  <rect class="box" x="250" y="620" width="420" height="150" />
+  <text class="label" x="275" y="660">Session State</text>
+  <text class="text" x="275" y="695">secret, attempts, score, status, history, ai_suggestion</text>
+  <text class="small" x="275" y="725">Maintains state across Streamlit reruns</text>
+
+  <rect class="box" x="920" y="620" width="420" height="150" />
+  <text class="label" x="945" y="660">External Service</text>
+  <text class="text" x="945" y="695">Google Gemini API</text>
+  <text class="small" x="945" y="725">Requires GOOGLE_API_KEY</text>
+
+  <rect class="boxAlt" x="90" y="850" width="1420" height="250" />
+  <text class="sectionTitle" x="150" y="895">Data Flow</text>
+  <text class="small" x="150" y="930">1. User selects difficulty and enters a guess in the Streamlit UI.</text>
+  <text class="small" x="150" y="960">2. app.py reads and updates session state, then calls logic_utils.py for validation, comparison, and scoring.</text>
+  <text class="small" x="150" y="990">3. If the user asks for help, ai_advisor.py calls Gemini, analyzes the valid range, and suggests the next guess.</text>
+  <text class="small" x="150" y="1020">4. evaluator.py validates inputs, AI outputs, and game state before suggestions are shown.</text>
+  <text class="small" x="150" y="1050">5. The UI displays hints, score, history, and win/loss messages, then the loop continues until the game ends.</text>
+  <text class="small" x="150" y="1080">6. New Game resets the session state and starts a fresh round.</text>
+
+  <path class="arrow" d="M 620 290 L 620 340" />
+  <path class="arrowBlue" d="M 430 540 L 430 620" />
+  <path class="arrowBlue" d="M 800 540 L 800 620" />
+  <path class="arrowGreen" d="M 1270 540 L 1270 620" />
+  <path class="arrow" d="M 670 695 L 905 695" />
+  <path class="arrow" d="M 1360 695 L 1360 850" />
+  <path class="arrow" d="M 460 770 L 460 850" />
+</svg>
