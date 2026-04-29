@@ -92,7 +92,7 @@ The app opens at `http://localhost:8501`
 
 These GIFs show the AI suggestion flow in action.
 
-| Demo 1 | Demo 2 |
+| Demo 1 | continue of Demo 1 |
 | --- | --- |
 | ![AI Suggest Demo 1](assets/ai-sugestdemo1.gif) | ![AI Suggest Demo 2](assets/ai-suggest-demo2.gif) |
 
