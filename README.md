@@ -33,37 +33,8 @@ Instead of guessing randomly, players can click **"Ask AI 🤖"** to get:
 
 ## 📋 System Architecture
 
-The system is built as a layered architecture with clear separation of concerns:
-
-```
-┌─────────────────────────────────────────┐
-│      Streamlit UI Layer (app.py)        │
-└─────────────────────────────────────────┘
-           ↓
-┌─────────────────────────────────────────┐
-│   Session State Management              │
-│   (Game state, history, attempts)       │
-└─────────────────────────────────────────┘
-     ↙                              ↘
-┌──────────────────────┐  ┌──────────────────────┐
-│ Logic Layer          │  │ AI Advisor Layer     │
-│ (logic_utils.py)     │  │ (ai_advisor.py)      │
-│ • Ranges             │  │ • Gemini API calls   │
-│ • Validation         │  │ • Binary search      │
-│ • Hints & Scoring    │  │ • Tool-based agents  │
-└──────────────────────┘  └──────────────────────┘
-     ↓                              ↓
-┌─────────────────────┐  ┌──────────────────────┐
-│ Reliability Layer    │  │ External Services    │
-│ (evaluator.py)      │  │ (Google Gemini API)  │
-│ • Input validation  │  │ • Smart suggestions  │
-│ • Output guardrails │  │ • Environment: key   │
-│ • State checks      │  │                      │
-└─────────────────────┘  └──────────────────────┘
-```
-
 For detailed architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
-The diagram is also exported as an asset at [assets/system-architecture.svg](assets/system-architecture.svg).
+The diagram is also exported at [assets/system-architecture.svg](assets/system-architecture.svg).
 
 ---
 
@@ -114,6 +85,16 @@ python -m streamlit run app.py
 ```
 
 The app opens at `http://localhost:8501`
+
+---
+
+## 🎬 Demo
+
+These GIFs show the AI suggestion flow in action.
+
+| Demo 1 | Demo 2 |
+| --- | --- |
+| ![AI Suggest Demo 1](assets/ai-sugestdemo1.gif) | ![AI Suggest Demo 2](assets/ai-suggest-demo2.gif) |
 
 ---
 
